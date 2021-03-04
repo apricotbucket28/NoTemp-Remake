@@ -10,7 +10,7 @@ namespace NoTemp
             Console.Title = "NoTemp";
             if (args.Length > 0 && args[0].Equals("/y"))
                 CleanTemp(false);
-            else if (YN("Do you want to clean the temporary folder?"))
+            else if (YN("Do you want to clean the temporary folder and the recycle bin?"))
                 CleanTemp(true);
             else
             {
@@ -43,6 +43,7 @@ namespace NoTemp
                 Console.WriteLine("File deleted: " + file);
                 total++;
             }
+
             foreach (DirectoryInfo dir in di.EnumerateDirectories())
             {
                 try
@@ -56,10 +57,15 @@ namespace NoTemp
                 Console.WriteLine("Directory removed: " + dir);
                 total++;
             }
+
             Console.WriteLine("\nTotal number of files and directories removed: " + total);
+
+            Console.WriteLine("\nCleaning the recycle bin...");
+            RecycleBin.EmptyRecycleBin();
+
             if (pressToExit)
             {
-                Console.WriteLine("Press any key to close the program...");
+                Console.WriteLine("\nPress any key to close the program...");
                 Console.ReadKey();
             }
         }
