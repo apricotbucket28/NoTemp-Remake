@@ -9,9 +9,9 @@ namespace NoTemp
         {
             Console.Title = "NoTemp";
             if (args.Length > 0 && args[0].Equals("/y"))
-                CleanTemp(false);
-            else if (YN("Do you want to clean the temporary folder and the recycle bin?"))
-                CleanTemp(true);
+                Clean(false);
+            else if (YN("Do you want to clean your PC?"))
+                Clean(true);
             else
             {
                 Console.Clear();
@@ -20,13 +20,12 @@ namespace NoTemp
             }
         }
 
-        private static void CleanTemp(bool pressToExit)
+        private static void Clean(bool isUserInput)
         {
-            if (pressToExit)
+            if (isUserInput)
                 Console.Clear();
 
-            string temp = Path.GetTempPath();
-            DirectoryInfo di = new DirectoryInfo(temp);
+            DirectoryInfo di = new DirectoryInfo(Path.GetTempPath());
 
             int total = 0;
 
@@ -60,10 +59,17 @@ namespace NoTemp
 
             Console.WriteLine("\nTotal number of files and directories removed: " + total);
 
-            Console.WriteLine("\nCleaning the recycle bin...");
-            RecycleBin.EmptyRecycleBin();
+            if (Chrome.IsInstalled())
+            {
+                Console.WriteLine("\nCleaning the Chrome cache...");
+                Chrome.ClearCache();
+                Console.WriteLine("Done");
+            }
 
-            if (pressToExit)
+            Console.WriteLine("\nCleaning the recycle bin...");
+            RecycleBin.Empty();
+
+            if (isUserInput)
             {
                 Console.WriteLine("\nPress any key to close the program...");
                 Console.ReadKey();

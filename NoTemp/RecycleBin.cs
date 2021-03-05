@@ -15,7 +15,7 @@ namespace NoTemp
         [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
         static extern uint SHEmptyRecycleBin(IntPtr hwnd, string pszRootPath, RecycleFlags dwFlags);
 
-        public static void EmptyRecycleBin()
+        public static void Empty()
         {
             uint result = SHEmptyRecycleBin(IntPtr.Zero, null, RecycleFlags.SHERB_NOCONFIRMATION);
             if (result == 0)
