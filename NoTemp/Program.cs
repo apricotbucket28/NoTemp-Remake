@@ -10,7 +10,7 @@ namespace NoTemp
             Console.Title = "NoTemp";
             if (args.Length > 0 && args[0].Equals("/y"))
                 Clean(false);
-            else if (YN("Do you want to clean your PC?"))
+            else if (YN("Do you want to clean your PC?", true))
                 Clean(true);
             else
             {
@@ -59,9 +59,9 @@ namespace NoTemp
 
             Console.WriteLine("\nTotal number of files and directories removed: " + total);
 
-            if (Chrome.IsInstalled())
+            if (Chrome.IsInstalled() && (!isUserInput || YN("\nDo you want to clear the Chrome cache (you might have to restart the browser)?", false)))
             {
-                Console.WriteLine("\nCleaning the Chrome cache...");
+                Console.WriteLine("Cleaning the Chrome cache...");
                 Chrome.ClearCache();
                 Console.WriteLine("Done");
             }
@@ -76,9 +76,10 @@ namespace NoTemp
             }
         }
 
-        private static bool YN(string question)
+        private static bool YN(string question, bool clearConsole)
         {
-            Console.Clear();
+            if (clearConsole)
+                Console.Clear();
             Console.Write(question + " (y/n) ");
             return (Console.ReadLine().ToLower()) switch
             {
@@ -86,7 +87,7 @@ namespace NoTemp
                 "yes" => true,
                 "n" => false,
                 "no" => false,
-                _ => YN(question),
+                _ => YN(question, clearConsole),
             };
         }
     }
