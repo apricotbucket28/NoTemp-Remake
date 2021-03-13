@@ -16,8 +16,10 @@ namespace NoTemp
             else
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("Press any key to close the program...");
                 Console.ReadKey();
+                Console.ResetColor();
             }
         }
 
@@ -40,7 +42,10 @@ namespace NoTemp
                 {
                     continue;
                 }
-                Console.WriteLine("File deleted: " + file);
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write("File deleted: ");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine(file);
                 total++;
             }
 
@@ -54,31 +59,44 @@ namespace NoTemp
                 {
                     continue;
                 }
-                Console.WriteLine("Directory removed: " + dir);
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write("Directory removed: ");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine(dir);
                 total++;
             }
 
             if (Chrome.IsInstalled() && (!isUserInput || YN("\nDo you want to clear the Chrome cache (you might have to restart the browser)?", false)))
             {
-                Console.WriteLine("Cleaning the Chrome cache...");
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.Write("Cleaning the Chrome cache... ");
                 Chrome.ClearCache();
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Done");
             }
 
             total += RecycleBin.Items();
-            Console.WriteLine("\nCleaning the recycle bin...");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("\nCleaning the recycle bin... ");
             uint result = RecycleBin.Empty();
             if (result == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Done");
+            }
             else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("The recycle bin was already empty");
+            }
 
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("\nTotal number of files and directories removed: " + total);
-
             if (isUserInput)
             {
-                Console.WriteLine("\nPress any key to close the program...");
+                Console.WriteLine("Press any key to close the program...");
                 Console.ReadKey();
+                Console.ResetColor();
             }
         }
 
@@ -86,7 +104,11 @@ namespace NoTemp
         {
             if (clearConsole)
                 Console.Clear();
-            Console.Write(question + " (y/n) ");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write(question);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write(" (y/n) ");
+            Console.ResetColor();
             switch (Console.ReadLine().ToLower())
             {
                 case "y":
