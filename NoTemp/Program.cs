@@ -5,6 +5,7 @@ namespace NoTemp
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             Console.Title = "NoTemp";
@@ -57,8 +58,6 @@ namespace NoTemp
                 total++;
             }
 
-            Console.WriteLine("\nTotal number of files and directories removed: " + total);
-
             if (Chrome.IsInstalled() && (!isUserInput || YN("\nDo you want to clear the Chrome cache (you might have to restart the browser)?", false)))
             {
                 Console.WriteLine("Cleaning the Chrome cache...");
@@ -66,8 +65,15 @@ namespace NoTemp
                 Console.WriteLine("Done");
             }
 
+            total += RecycleBin.Items();
             Console.WriteLine("\nCleaning the recycle bin...");
-            RecycleBin.Empty();
+            uint result = RecycleBin.Empty();
+            if (result == 0)
+                Console.WriteLine("Done");
+            else
+                Console.WriteLine("The recycle bin was already empty");
+
+            Console.WriteLine("\nTotal number of files and directories removed: " + total);
 
             if (isUserInput)
             {
@@ -81,14 +87,19 @@ namespace NoTemp
             if (clearConsole)
                 Console.Clear();
             Console.Write(question + " (y/n) ");
-            return (Console.ReadLine().ToLower()) switch
+            switch (Console.ReadLine().ToLower())
             {
-                "y" => true,
-                "yes" => true,
-                "n" => false,
-                "no" => false,
-                _ => YN(question, clearConsole),
-            };
+                case "y":
+                    return true;
+                case "yes":
+                    return true;
+                case "n":
+                    return false;
+                case "no":
+                    return false;
+                default:
+                    return YN(question, clearConsole);
+            }
         }
     }
 }

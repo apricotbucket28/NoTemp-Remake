@@ -15,13 +15,18 @@ namespace NoTemp
         [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
         static extern uint SHEmptyRecycleBin(IntPtr hwnd, string pszRootPath, RecycleFlags dwFlags);
 
-        public static void Empty()
+        public static uint Empty()
         {
             uint result = SHEmptyRecycleBin(IntPtr.Zero, null, RecycleFlags.SHERB_NOCONFIRMATION);
-            if (result == 0)
-                Console.WriteLine("Done");
-            else
-                Console.WriteLine("The recycle bin was already empty");
+            return result;
+        }
+
+        public static int Items()
+        {
+            var shell = new Shell32.Shell();
+            var recycleBin = shell.NameSpace(10);
+            int recycleBinItems = recycleBin.Items().Count;
+            return recycleBinItems;
         }
     }
 }
