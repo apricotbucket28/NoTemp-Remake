@@ -17,16 +17,14 @@ namespace NoTemp
 
         public static uint Empty()
         {
-            uint result = SHEmptyRecycleBin(IntPtr.Zero, null, RecycleFlags.SHERB_NOCONFIRMATION);
+            uint result = SHEmptyRecycleBin(IntPtr.Zero, null, RecycleFlags.SHERB_NOCONFIRMATION | RecycleFlags.SHERB_NOSOUND);
             return result;
         }
 
         public static int Items()
         {
             var shell = new Shell32.Shell();
-            var recycleBin = shell.NameSpace(10);
-            int recycleBinItems = recycleBin.Items().Count;
-            return recycleBinItems;
+            return shell.NameSpace(10).Items().Count;
         }
     }
 }

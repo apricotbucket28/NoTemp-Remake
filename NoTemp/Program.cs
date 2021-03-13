@@ -91,7 +91,7 @@ namespace NoTemp
             }
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("\nTotal number of files and directories removed: " + total);
+            Console.WriteLine("\nTotal number of files and directories removed: " + string.Format("{0:n0}", total));
             if (isUserInput)
             {
                 Console.WriteLine("Press any key to close the program...");
